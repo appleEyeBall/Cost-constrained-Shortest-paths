@@ -17,4 +17,4 @@ This folder contains the following:
 
 
 to run type on command line:
-cpath <filename> <src> <dest> <budget>
+./cpath <filename> <src> <dest> <budget>
