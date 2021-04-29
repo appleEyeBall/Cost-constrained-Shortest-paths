@@ -14,3 +14,7 @@ This folder contains the following:
     extension.
 
   A makefile which compiles the various executables.
+
+
+to run type on command line:
+cpath <filename> <src> <dest> <budget>
