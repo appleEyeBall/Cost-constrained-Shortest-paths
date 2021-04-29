@@ -1,5 +1,6 @@
 
-all: dfs bfs topo display
+
+all: dfs bfs topo display cpath
 
 clean:
 	rm -f dfs bfs topo display
@@ -18,3 +19,6 @@ topo: topo.cpp Graph.h
 
 epaths: epaths.cpp Graph.h
 	g++ -std=c++11 epaths.cpp -o epaths
+	
+cpath: cpath.cpp Graph.h
+	g++ -std=c++11 cpath.cpp -o cpath

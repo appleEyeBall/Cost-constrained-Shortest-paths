@@ -560,6 +560,9 @@ class graph {
       // By convention, we set the predecessor to itself.
       report[src].pred = src;
       report[src].state = DISCOVERED;
+		
+	  report[src].npaths = 1; //added in	
+	
       q.push(src);
 
       while(!q.empty()) {
@@ -574,9 +577,17 @@ class graph {
             report[v].dist = report[u].dist + 1;
             report[v].pred = u;
             report[v].state = DISCOVERED;
+			  
+			  report[v].npaths = 1;//added in
             // enqueue newly discovered vertex
             q.push(v);
           }
+			//added
+			else if(report[v].state == DISCOVERED){
+               if (report[v].dist == report[u].dist + 1)
+                   report[v].npaths++;
+           }
+			//stop here
         }
       }
       return true;
