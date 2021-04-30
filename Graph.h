@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <sstream>
 #include <fstream>
+#include <algorithm>
 
 using std::string;
 using std::vector;
@@ -544,7 +545,52 @@ class graph {
      * RUNTIME:  bfs must still be O(V+E).
      *
      */   
-    bool bfs(int src, std::vector<vertex_label> &report) {
+    // bool bfs(int src, std::vector<vertex_label> &report) {
+    //   int u, v;
+    //   std::queue<int> q;
+
+    //   if(src < 0 || src >= num_nodes())
+    //     return false;
+
+    //   init_report(report);
+
+    //   report[src].dist = 0;
+
+    //   // since src is the root of the bfs tree, it has no 
+    //   //   predecessor.
+    //   // By convention, we set the predecessor to itself.
+    //   report[src].pred = src;
+    //   report[src].state = DISCOVERED;
+	  //   report[src].npaths = 1; //  report[src].npaths will be 1.
+	
+    //   q.push(src);
+
+    //   while(!q.empty()) {
+    //     // dequeue front node from queue
+    //     u = q.front();
+    //     q.pop();
+
+    //     // examine outgoing edges of u
+    //     for(edge &e : vertices[u].outgoing) {
+    //       v = e.vertex_id;
+    //       if(report[v].state == UNDISCOVERED) {
+    //         report[v].dist = report[u].dist + 1;
+    //         report[v].pred = u;
+    //         report[v].state = DISCOVERED;
+		// 	      report[v].npaths = 1;
+    //         // enqueue newly discovered vertex
+    //         q.push(v);
+    //       }
+		// 	    else{
+    //           if ((report[v].dist == report[u].dist + 1)&&report[v].state == DISCOVERED)
+    //                report[v].npaths++;
+    //        }
+    //     }
+    //   }
+    //   return true;
+    // }
+
+      bool bfs(int src, std::vector<vertex_label> &report) {
       int u, v;
       std::queue<int> q;
 
@@ -560,8 +606,6 @@ class graph {
       // By convention, we set the predecessor to itself.
       report[src].pred = src;
       report[src].state = DISCOVERED;
-	    report[src].npaths = 1; //  report[src].npaths will be 1.
-	
       q.push(src);
 
       while(!q.empty()) {
@@ -576,14 +620,9 @@ class graph {
             report[v].dist = report[u].dist + 1;
             report[v].pred = u;
             report[v].state = DISCOVERED;
-			      report[v].npaths = 1;
             // enqueue newly discovered vertex
             q.push(v);
           }
-			    else{
-              if ((report[v].dist == report[u].dist + 1)&&report[v].state == DISCOVERED)
-                   report[v].npaths++;
-           }
         }
       }
       return true;
@@ -784,9 +823,9 @@ class graph {
             return false;
     }
 
-  public:
+   public:
     bool extract_path(const vector<vertex_label> & rpt, 
-        int dest, vector<int> & path) {
+      int dest, vector<int> & path) {
       path.clear();
       if(rpt.size() != num_nodes())
         return false;
