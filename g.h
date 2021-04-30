@@ -560,7 +560,7 @@ class graph {
       // By convention, we set the predecessor to itself.
       report[src].pred = src;
       report[src].state = DISCOVERED;
-	    report[src].npaths = 1; //  report[src].npaths will be 1.
+	    report[src].npaths = 1;
 	
       q.push(src);
 
@@ -576,12 +576,13 @@ class graph {
             report[v].dist = report[u].dist + 1;
             report[v].pred = u;
             report[v].state = DISCOVERED;
-			      report[v].npaths = 1;
+			  
+			  report[v].npaths = 1;
             // enqueue newly discovered vertex
             q.push(v);
           }
-			    else{
-              if ((report[v].dist == report[u].dist + 1)&&report[v].state == DISCOVERED)
+			else if(report[v].state == DISCOVERED){
+               if (report[v].dist == report[u].dist + 1)
                    report[v].npaths++;
            }
         }
@@ -714,7 +715,7 @@ class graph {
     }
 
 
-    /* 
+    /* TODO 20 points
      * function:  extract_path
      * desc:  extracts the path (if any) encoded by vertex labels
      *        ending at vertex dest (as an int ID).  Resulting path
@@ -762,7 +763,6 @@ class graph {
      *    the path extracted.
      *
      */
-  private:
     bool _expath (const vector<vertex_label> & rpt, 
         int dest, vector<int> & path) {
 
@@ -783,8 +783,6 @@ class graph {
         else // recursive call went haywire?
             return false;
     }
-
-  public:
     bool extract_path(const vector<vertex_label> & rpt, 
         int dest, vector<int> & path) {
       path.clear();
@@ -795,8 +793,222 @@ class graph {
       return true;  // placeholder
     }
 
+    /*
+     *  TODO 30 points
+     *
+     *  func: dag_critical_paths
+     *  desc: for each vertex u, the length of the critical (LONGEST)
+     *        input-path ENDING AT u.
+     *
+     *        The "length" of a path is the SUM OF THE WEIGHTS OF THE
+     *        EDGES ON THE PATH.
+     *
+     *        On completion, the results are stored in the vector rpt.
+     *        For each vertex u (as an intID),
+     *
+     *          rpt[u].dist  stores the length of the longest (critical)
+     *            input-path ending at vertex u.
+     *
+     *          rpt[u].pred  stores the predecessor vertex of u on a 
+     *            critical/longest input path ending at u.  If there
+     *            are multiple such paths (having equal maximum length)
+     *            there may be multiple correct predecessors.
+     *
+     *  returns:  true on success (as long as graph is a DAG).
+     *            false if graph is not a DAG.
+     *
+     *  runtime:  O(V+E)
+     */
+    bool dag_critical_paths(vector<vertex_label> & rpt) {
+
+      if(has_cycle())
+        return false;
+      // your code here...
+      return true;
+    }
+
+    /*
+     *  TODO 30 points
+     *  function:  dag_num_paths
+     *  desc:  if given graph (calling object) is a DAG, the vector
+     *         rpt is populated such that:
+     *
+     *           rpt[u].npaths = number of io-paths passing through
+     *                            vertex u.
+     *
+     *           Recall: an IO path starts at an input vertex and
+     *             ends at an output vertex.
+     *
+     *           This value is defined for all vertices u in the
+     *             graph (inputs, outputs and "intermediate" nodes).
+     *
+     *  NOTES:  rpt[u].pred, and rpt[u].dist have no partiular 
+     *          meaning after this operation.
+     *
+     *  EXAMPLE:
+
+                         a  b  c
+                         \  |  /
+                          \ | /
+                            d
+                           / \
+                          e   f
+                           \ /
+                            g
+                           / \
+                          h   i
+                           \ /
+                            j
+
+            There are 3 input nodes (a,b,c) and one output node (j)
+            in this graph.
+
+            There are 12 distinct io-paths passing through vertex d in 
+            this dag (note:  edges are pointed downward)
+
+            Can you enumerate them?
+
+     *
+     *  returns true if graph is a DAG; false otherwise.        
+     *
+     *  RUNTIME:  O(V+E)  -- Note: in general, the number of paths
+     *                       in a graph may be exponential in the
+     *                       number of vertices.
+     *
+     *                       This means that you cannot explicitly
+     *                       enumerate all of the paths and count them!
+     *                       (The enum_paths function below which DOES
+     *                       enumerate a set of paths MAY take exponential
+     *                       time).
+     *
+     * General Hint:  an io-path passing through a vertex u is 
+     *   composed of an input-path ending at u, followed by an
+     *   output path starting at u.  
+     *
+     *   Now, if you could figure out the number of input-paths
+     *   ending at u and the number of output paths starting at u, 
+     *   could you determine the number of io-paths passing through
+     *   u?
+     *
+     */
+    bool dag_num_paths(vector<vertex_label> & rpt) {
+      if(has_cycle())
+        return false;
+      // your code here...
+      return true;
+    }
+
+    /*
+     * TODO 20 points
+     * function:  valid_topo_order
+     * desc:  determines if vertex sequence in the given vector
+     *        (parameter order) is a valid topological ordering of
+     *        the given graph (calling object).
+     *
+     *        returns true if it is; false otherwise.
+     *
+     * details:  returns false if graph is not a DAG.
+     *
+     *           Note that vertices are given as their integer IDs.
+     *
+     * RUNTIME:  O(V+E)
+     */
+    bool valid_topo_order(const vector<int> & order) {
+      if(has_cycle())
+        return false;
+      return true;
+
+    }
+
+    /*
+     * TODO 30 points
+     *
+     * function:  enum_paths
+     * desc:  enumerates all input-paths ending at target vertes in
+     *        a DAG.
+     * details:  Given a DAG and vertex target in the graph, the
+     *   vector paths is populated with ALL input paths ending at
+     *   vertex target.
+     *
+     * [NOTE:  target vertex is passed as its integer ID; however,
+     *   vertices in paths constructed are represented by their 
+     *   name -- as a string]
+     *
+     * A path is represented as a string containing the names of
+     * each vertex (NOT intger vertex IDs) on the path in sequence; 
+     * vertex names are separated by a single space.
+     *
+     * returns:  true on success; 
+     *           false on failure (graph is not a DAG or target vertex ID
+     *           is out of range).
+     *
+     * RUNTIME:  this one may be unavoidably exponential!
+     *
+     * EXAMPLES:
+     *
+     *   Chicago
+     *   NewYork
+     *   LosAngeles
+     *
+     * and there are edges:
+     *
+     *   LosAngeles Chicago
+     *   Chicago NewYork
+     *
+     * The path LosAngeles to Chicago to NewYork is represented by the
+     * string:
+     *
+     *   "LosAngeles Chicago NewYork"
+     *
+     * Another example:  the input file ex1A is a DAG.  Using vertex g
+     * as the target (integer ID: 6), will result in the paths vector
+     * containing the following strings:
+     *
+
+           "a d g"
+           "a b d g"
+           "a c d g"
+           "a d e g"
+           "a b d e g"
+           "a c d e g"
+           "a d f g"
+           "a b d f g"
+           "a c d f g"
+     *
+     * NOTE:  the concatenation operator '+' on strings might
+     *   make some of your work pretty easy to code!
+     *
+     * COMMENT:  this function can be implemented with about
+     *   20 lines of code.
+     */
+    bool enum_paths(int target, vector<string> &paths) {
+      paths.clear();
+      if(has_cycle() || target < 0 || target >= num_nodes())
+        return false;
+
+      // your code here!
+      return true;
+    }
 
 
+
+    /*
+     * (DONE)
+     * func: enum_paths(string, vector<string> &)
+     * desc: same as enum_paths(int, vector<string> &) above except
+     *       target vertex is taken as its name (as a string).
+     *
+     *       Simply translates target vertex name to its integer id
+     *       and calls enum_paths(int, vector<string> &) above.
+     */
+    bool enum_paths(const string &target,  vector<string> &paths) {
+      int tgt;
+      if((tgt=name2id(target)) == -1)
+          return false;
+
+      return enum_paths(tgt, paths);
+    }
+    
 
 
 
