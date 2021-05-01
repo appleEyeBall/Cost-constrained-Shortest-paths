@@ -440,7 +440,7 @@ class graph {
       for(u=0; u<vertices.size(); u++) {
         std::cout << vertices[u].name << " : ";
 
-        for(edge &e : vertices[u].outgoing) 
+        for(edge &e : vertices[u].outgoing)
           p_edge(e);
         std::cout << "\n";
       }
@@ -606,6 +606,7 @@ class graph {
       // By convention, we set the predecessor to itself.
       report[src].pred = src;
       report[src].state = DISCOVERED;
+      report[src].npaths = 1; //  report[src].npaths will be 1.
       q.push(src);
 
       while(!q.empty()) {
@@ -620,9 +621,14 @@ class graph {
             report[v].dist = report[u].dist + 1;
             report[v].pred = u;
             report[v].state = DISCOVERED;
+            report[v].npaths = 1;
             // enqueue newly discovered vertex
             q.push(v);
           }
+          else{
+              if ((report[v].dist == report[u].dist + 1)&&report[v].state == DISCOVERED)
+                   report[v].npaths++;
+           }
         }
       }
       return true;
@@ -801,6 +807,51 @@ class graph {
      *    the path extracted.
      *
      */
+
+
+
+
+
+    bool extract_path(const vector<vertex_label> &rpt, int dest, vector<int> &path){
+      path.clear();
+      if (rpt.size() != num_nodes())
+        return false;
+      if (dest > rpt.size())
+        return false;
+      int u;
+      //we will start at the dest and work our way to a start node
+      for ( u = dest; u >= -1; u = rpt[u].pred){
+        //if we reached to to a start node from
+        //dest then break the loop
+        if (vertices[u].incoming.size() == 0){
+          //Adding the current node to the path
+          path.push_back(u);
+          //if we reached to start node than break.
+          break;
+        }
+        //if no path is ends with dest
+        //and then return false
+        if (rpt[u].pred == -1){
+          path.clear();
+          return false;
+        }
+      
+        //Adding the current node to the path
+        path.push_back(u);
+      }
+      //don't forget to reverse the path
+      //because we built it backwards
+      // reverse_vector(path);
+      _expath(rpt, dest, path);
+      return true;
+      }
+
+
+
+
+
+
+
   private:
     bool _expath (const vector<vertex_label> & rpt, 
         int dest, vector<int> & path) {
@@ -823,16 +874,16 @@ class graph {
             return false;
     }
 
-   public:
-    bool extract_path(const vector<vertex_label> & rpt, 
-      int dest, vector<int> & path) {
-      path.clear();
-      if(rpt.size() != num_nodes())
-        return false;
+  //  public:
+  //   bool extract_path(const vector<vertex_label> & rpt, 
+  //     int dest, vector<int> & path) {
+  //     path.clear();
+  //     if(rpt.size() != num_nodes())
+  //       return false;
 
-      _expath(rpt, dest, path);
-      return true;  // placeholder
-    }
+  //     _expath(rpt, dest, path);
+  //     return true;  // placeholder
+  //   }
 
 
 
