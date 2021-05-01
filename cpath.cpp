@@ -37,16 +37,16 @@ int main(int argc, char *argv[]){
     g.disp_report(bfs_rpt, true);
     std::cout << "\nEND BFS REPORT\n\n";
   }
-  // if(!g.extract_path(extract_path_rpt, argv4, path)){
-  //   std::cout << "extract path failed -- bad dest vertex name '" <<
-  //     argv[3] << "'\n";
-  //   return 0;
-  // }
-  // else{
-  //   std::cout << "\nEXTRACT PATH REPORT:\n\n";
-  //   g.disp_report(extract_path_rpt, true);
-  //   std::cout << "\nEND EXTRACT PATH REPORT\n\n";
-  // }
+  if(!g.extract_path(extract_path_rpt, argv4, path)){
+    std::cout << "extract path failed -- bad dest vertex name '" <<
+      argv[3] << "'\n";
+    return 0;
+  }
+  else{
+    std::cout << "\nEXTRACT PATH REPORT:\n\n";
+    g.disp_report(extract_path_rpt, true);
+    std::cout << "\nEND EXTRACT PATH REPORT\n\n";
+  }
 
   return 0;
 }
