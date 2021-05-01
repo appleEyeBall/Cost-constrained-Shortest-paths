@@ -787,56 +787,6 @@ class graph {
 
 
 
-
-  //   bool extract_path(const vector<vertex_label> &rpt, int dest, vector<int> &path){
-  //     path.clear();
-
-  //  //   init_report(rpt);
-
-  //     if (rpt.size() != num_nodes()){
-  //       cout << "I am here " << endl;
-  //       return false;
-  //     }
-        
-  //     if (dest > rpt.size()){
-  //       return false;
-  //       cout << "in here" << endl;
-  //     }
-        
-  //     int u;
-  //     //we will start at the dest and work our way to a start node
-  //     for ( u = dest; u >= -1; u = rpt[u].pred){
-  //       //if we reached to to a start node from
-  //       //dest then break the loop
-  //       if (vertices[u].incoming.size() == 0){
-  //         //Adding the current node to the path
-  //         path.push_back(u);
-  //         //if we reached to start node than break.
-  //         break;
-  //       }
-  //       //if no path is ends with dest
-  //       //and then return false
-  //       if (rpt[u].pred == -1){
-  //         path.clear();
-  //         return false;
-  //       }
-      
-  //       //Adding the current node to the path
-  //       path.push_back(u);
-  //     }
-  //     //don't forget to reverse the path
-  //     //because we built it backwards
-  //     // reverse_vector(path);
-  //     _expath(rpt, dest, path);
-  //     return true;
-  //     }
-
-
-
-
-
-
-
   private:
     bool _expath (const vector<vertex_label> & rpt, 
         int dest, vector<int> & path) {
