@@ -1,4 +1,9 @@
 
+Team members: Maddy Wikstrom netid: mwikst2
+
+Oluwatise Olasebikan netid: oolase2
+
+
 This folder contains the following:
 
   A C++ directed graph class in file Graph.h.  The class
