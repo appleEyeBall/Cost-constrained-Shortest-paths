@@ -22,9 +22,9 @@ int main(int argc, char *argv[]){
     }
   }
 
-  std::cout << "\nADJACENCY-LIST REPRESENTATION:\n\n";
-  g.display();
-  std::cout << "\nEND ADJACENCY LIST:\n\n";
+  // std::cout << "\nADJACENCY-LIST REPRESENTATION:\n\n";
+  // g.display();
+  // std::cout << "\nEND ADJACENCY LIST:\n\n";
 
   int argv4 = stoi(argv[3]);
   if(!g.bfs(argv[2], bfs_rpt)){

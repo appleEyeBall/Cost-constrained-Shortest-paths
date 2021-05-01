@@ -18,6 +18,8 @@ using std::unordered_set;
 #define ACTIVE       'a'
 #define FINISHED     'f'
 
+using namespace std;
+
 /*
  * function:  pvec
  * description:  utility function that prints the elements of
@@ -545,52 +547,19 @@ class graph {
      * RUNTIME:  bfs must still be O(V+E).
      *
      */   
-    // bool bfs(int src, std::vector<vertex_label> &report) {
-    //   int u, v;
-    //   std::queue<int> q;
 
-    //   if(src < 0 || src >= num_nodes())
-    //     return false;
+    // starting point is 0, 0  src
+    // look at all possible verex neighbors cost
+    // push all to the queue add the cost and time to the prev cost and time
+    // find which one has lowest cost
+    // push that one to the priority 
+    // move to the next neighbor with the vertex that you chose
+    // repeat until nothing left to compare to in the queue
+   
+    // once you reach the destination pick the one with the cheapest cost and
+    // that is your path
 
-    //   init_report(report);
-
-    //   report[src].dist = 0;
-
-    //   // since src is the root of the bfs tree, it has no 
-    //   //   predecessor.
-    //   // By convention, we set the predecessor to itself.
-    //   report[src].pred = src;
-    //   report[src].state = DISCOVERED;
-	  //   report[src].npaths = 1; //  report[src].npaths will be 1.
-	
-    //   q.push(src);
-
-    //   while(!q.empty()) {
-    //     // dequeue front node from queue
-    //     u = q.front();
-    //     q.pop();
-
-    //     // examine outgoing edges of u
-    //     for(edge &e : vertices[u].outgoing) {
-    //       v = e.vertex_id;
-    //       if(report[v].state == UNDISCOVERED) {
-    //         report[v].dist = report[u].dist + 1;
-    //         report[v].pred = u;
-    //         report[v].state = DISCOVERED;
-		// 	      report[v].npaths = 1;
-    //         // enqueue newly discovered vertex
-    //         q.push(v);
-    //       }
-		// 	    else{
-    //           if ((report[v].dist == report[u].dist + 1)&&report[v].state == DISCOVERED)
-    //                report[v].npaths++;
-    //        }
-    //     }
-    //   }
-    //   return true;
-    // }
-
-      bool bfs(int src, std::vector<vertex_label> &report) {
+    bool bfs(int src, std::vector<vertex_label> &report) {
       int u, v;
       std::queue<int> q;
 
@@ -606,11 +575,14 @@ class graph {
       // By convention, we set the predecessor to itself.
       report[src].pred = src;
       report[src].state = DISCOVERED;
+	    report[src].npaths = 1; //  report[src].npaths will be 1.
+	
       q.push(src);
 
       while(!q.empty()) {
         // dequeue front node from queue
         u = q.front();
+         cout << "This is u" << u << endl;
         q.pop();
 
         // examine outgoing edges of u
@@ -620,13 +592,20 @@ class graph {
             report[v].dist = report[u].dist + 1;
             report[v].pred = u;
             report[v].state = DISCOVERED;
+			      report[v].npaths = 1;
             // enqueue newly discovered vertex
+           
             q.push(v);
           }
+          else if (report[v].dist == report[u].dist + 1 &&report[v].state == DISCOVERED)
+              report[v].npaths++;
+ 
         }
       }
       return true;
     }
+
+ 
 
     bool bfs(const string src, std::vector<vertex_label> &report) {
       int u;
